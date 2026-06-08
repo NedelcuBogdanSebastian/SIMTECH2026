@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Configurator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="topbar-brand">
+            <div class="brand-hex">⬡</div>
+            <div class="brand-text">
+                <span class="brand-main">Module</span>
+                <span class="brand-sub">Configurator</span>
+            </div>
+        </div>
+
+        <div class="topbar-controls">
+            <!-- Ambient temperature — shown in live mode -->
+            <div id="ambient-pill" class="ambient-pill">
+                Ambient &nbsp;
+                <span class="ambient-temp" id="ambient-val">—</span>
+                &nbsp;°C
+            </div>
+
+            <!-- Connection mode toggle -->
+            <div class="mode-toggle">
+                <button id="mode-rtu" class="mode-btn active">RTU</button>
+                <button id="mode-tcp" class="mode-btn">TCP</button>
+            </div>
+
+            <!-- RTU fields -->
+            <div id="rtu-fields" class="conn-fields">
+                <select id="port-select" class="ctrl-select">
+                    <option value="">Scan for ports…</option>
+                </select>
+                <button id="btn-scan" class="btn-icon-only" title="Refresh ports">↻</button>
+            </div>
+
+            <!-- TCP fields -->
+            <div id="tcp-fields" class="conn-fields" style="display:none">
+                <input id="tcp-host" class="ctrl-input" type="text" placeholder="192.168.1.10" maxlength="64">
+                <span class="ctrl-label">:</span>
+                <input id="tcp-port" class="ctrl-input ctrl-input-sm" type="number" value="502" min="1" max="65535">
+            </div>
+
+            <button id="btn-connect" class="btn btn-connect">Connect</button>
+
+            <button id="btn-live" class="btn-live" disabled title="Toggle live data view">
+                <span class="live-dot"></span>
+                Live data
+            </button>
+
+            <div id="status-pill" class="status-pill status-off">
+                <span class="pill-dot"></span>
+                <span id="status-text">Offline</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="canvas">
+
+        <section class="matrix-wrap">
+            <!-- Row 1: AQ + slots 0-9 -->
+            <div class="matrix-row">
+                <div class="aq-unit">
+                    <img src="{{ url_for('static', filename='images/AQ.png') }}" alt="AQ" class="aq-img">
+                    <div class="aq-label">Acquisition</div>
+                </div>
+                <div class="slots-row" id="slots-top"></div>
+            </div>
+
+            <!-- Row 2: spacer + slots 10-18 -->
+            <div class="matrix-row">
+                <div class="aq-spacer"></div>
+                <div class="slots-row" id="slots-bottom"></div>
+            </div>
+        </section>
+
+        <aside class="side-panel">
+            <div class="panel-block">
+                <p class="panel-heading">Configuration</p>
+                <div class="stat-row">
+                    <span class="stat-label">Active modules</span>
+                    <span class="stat-value" id="active-count">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Saved on device</span>
+                    <span class="stat-value" id="device-count">—</span>
+                </div>
+            </div>
+
+            <div class="panel-block">
+                <p class="panel-heading">Actions</p>
+                <button id="btn-write" class="btn btn-write" disabled>
+                    Write configuration
+                </button>
+                <button id="btn-clear" class="btn btn-clear">
+                    Clear all
+                </button>
+            </div>
+
+            <div id="toast" class="toast toast-hidden"></div>
+        </aside>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
